@@ -215,15 +215,17 @@ class MTQN(torch.nn.Module):
 		self.shared = Sequential(
 			Linear(512, 256),
 			LeakyReLU(),
-			Linear(256, 32),
+			Linear(256, 64),
 			LeakyReLU(),
-			Linear(32, 10),
+			Linear(64, 32),
 			LeakyReLU(),
 		)
 
 		self.outputs = [
 			Sequential(
-				Linear(10, s)
+				Linear(32, 16),
+				LeakyReLU(),
+				Linear(16, s)
 			)
 
 			for s in output_shapes
