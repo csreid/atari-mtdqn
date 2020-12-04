@@ -203,9 +203,10 @@ class MTQN(torch.nn.Module):
 				LeakyReLU(),
 				Conv2d(64, 64, kernel_size=3, stride=1),
 				LeakyReLU(),
-
 				Flatten(),
 				Linear(3136, 512),
+				LeakyReLU(),
+				Linear(512, 256),
 				LeakyReLU(),
 			)
 
@@ -213,8 +214,6 @@ class MTQN(torch.nn.Module):
 		]
 
 		self.shared = Sequential(
-			Linear(512, 256),
-			LeakyReLU(),
 			Linear(256, 64),
 			LeakyReLU(),
 			Linear(64, 32),
