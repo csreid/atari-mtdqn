@@ -4,7 +4,7 @@ import copy
 import numpy as np
 from numpy import e
 import torch
-from torch.nn import Sequential, Linear, LeakyReLU, MSELoss, Conv2d, Flatten
+from torch.nn import Sequential, Linear, LeakyReLU, MSELoss, Conv2d, Flatten, Sigmoid
 from torch.optim import Adam, RMSprop
 from torch.nn.utils import clip_grad_value_
 
@@ -195,6 +195,9 @@ class TargetQLearning(QLearning):
 class MTQN(torch.nn.Module):
 	def __init__(self, output_shapes):
 		super().__init__()
+		# Apply the convolution stack from (Minh, 2015)
+		# but output a 1024-dimension meta-state vector
+		# with values in (0, 1)
 		self.inputs = [
 			Sequential(
 				Conv2d(4, 32, kernel_size=8, stride=4),
@@ -204,27 +207,30 @@ class MTQN(torch.nn.Module):
 				Conv2d(64, 64, kernel_size=3, stride=1),
 				LeakyReLU(),
 				Flatten(),
-				Linear(3136, 512),
-				LeakyReLU(),
-				Linear(512, 256),
-				LeakyReLU(),
+				Linear(3136, 1024),
+				Sigmoid()
 			)
 
 			for _ in output_shapes
 		]
 
+		# Shared layers map 1024d metastate to a 128d
+		# feature vector, with values in (0, 1)
 		self.shared = Sequential(
-			Linear(256, 64),
+			Linear(1024, 512),
 			LeakyReLU(),
-			Linear(64, 32),
+			Linear(512, 256),
 			LeakyReLU(),
+			Linear(256, 128),
+			Sigmoid()
 		)
 
+		# Map features to task-specific outputs
 		self.outputs = [
 			Sequential(
-				Linear(32, 16),
+				Linear(128, 64),
 				LeakyReLU(),
-				Linear(16, s)
+				Linear(64, s)
 			)
 
 			for s in output_shapes

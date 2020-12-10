@@ -43,7 +43,7 @@ pacman_likes = [
 	'AlienNoFrameskip-v4',
 ]
 
-all_games = spaceinvader_likes + pong_likes + pacman_likes
+all_games = pong_likes #spaceinvader_likes + pong_likes + pacman_likes
 
 all_envs = [
 	TorchWrapper(FrameStack(AtariPreprocessing(gym.make(n)), num_stack=4))
