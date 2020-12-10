@@ -139,12 +139,12 @@ def run():
 
 		steps_taken += 1
 
-		if ((steps_taken*4) % 10000) == 0:
+		if ((steps_taken*4) % 1000) == 0:
 			evls = [agt.evaluate(eval_env, 5) for agt, eval_env in zip(agts, all_eval_envs)]
 
-			for idx, evl in evls:
-				logger.add_scalar(f'Evaluation ({all_games[idx]})', np.mean(evls1), steps_taken)
-				print(f'\tEval: {evls1} | {evls2}')
+			for idx, evl in enumerate(evls):
+				logger.add_scalar(f'Evaluation ({all_games[idx]})', evls[idx], steps_taken)
+			print(evls)
 
 if __name__ == '__main__':
 	try:
