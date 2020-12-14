@@ -1,7 +1,6 @@
 ---
 author: Cameron Reid
-title: "Sharing knowledge in multi-task deep reinforcement learning"
-subtitle: A Review
+title: A Review of "Sharing knowledge in multi-task deep reinforcement learning"
 date: Deceber 14 2020
 classoption:
 - twocolumn
@@ -17,7 +16,7 @@ In this work, I attempt to replicate the results shown in @d2019sharing; I attem
 
 # Application to Atari Environments
 
-In order to evaluate the methods in this paper, I believe it is important to apply the techniques to a non-trivial learning task; for that purpose, I chose the "from-pixels" Atari environments provided in (@brockman2016openai). In these environments, the state is provided as a small (~210x160) RGB image which represents the current screen of the chosen Atari game. The action space is a discrete set of the actions that are coherent within each game; there are at most 16 actions, corresponding to the Cartesian product of the 8 directions the joystick can take with the binary state of the button.
+In order to evaluate the methods in this paper, I believe it is important to apply the techniques to a non-trivial learning task; for that purpose, I chose the "from-pixels" Atari environments provided in @brockman2016openai. In these environments, the state is provided as a small (~210x160) RGB image which represents the current screen of the chosen Atari game. The action space is a discrete set of the actions that are coherent within each game; there are at most 16 actions, corresponding to the Cartesian product of the 8 directions the joystick can take with the binary state of the button.
 
 Atari games are relatively simple (as video games go), and tend to fall into one of a few categories. Over the course of the experiments, I attempted to learn 10 games divided into three major categories:
 
@@ -51,7 +50,7 @@ I trained this (and similar) architectures on various combinations of the Pong-l
 
 I believe that this approach could work with a bit more tweaking. Unfortunately, there is a significant computational cost to training these networks on the Atari environments (300,000 steps takes ~20 hours on the IUPUI graduate student servers), and I ran out of time to continue tweaking.
 
-However, I think it serves an important lesson that attempting to implement this architecture to complex environments could lead to difficulty, and care must be taken.
+While I don't have results from these experiments, I think it serves an important lesson that attempting to implement this architecture to complex environments could lead to difficulty, and care must be taken.
 
 # Examination of Learned Features in Control Tasks
 
