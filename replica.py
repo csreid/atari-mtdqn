@@ -12,6 +12,7 @@ class TorchWrapper(ObservationWrapper):
 	def observation(self, obs):
 		return torch.tensor(obs).float()
 
+n_features = 10
 class MTQN(torch.nn.Module):
 	def __init__(self, input_shapes, output_shapes):
 		super().__init__()
@@ -27,14 +28,14 @@ class MTQN(torch.nn.Module):
 		self.shared = Sequential(
 			Linear(80, 80),
 			ReLU(),
-			Linear(80, 80),
+			Linear(80, n_features),
 			Sigmoid()
 		)
 
 		# Map features to task-specific outputs
 		self.outputs = [
 			Sequential(
-				Linear(80, o_s)
+				Linear(n_features, o_s)
 			)
 
 			for o_s in output_shapes
@@ -140,4 +141,4 @@ for epoch in range(EPOCHS):
 	for agt, env in zip(agts, eval_envs):
 		agt.play_simple(env)
 
-pickle.dump(agts, open('agts.pickle', 'wb'))
+pickle.dump(agts, open('agts_smaller.pickle', 'wb'))
