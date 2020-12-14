@@ -2,10 +2,10 @@ import torch
 import numpy as np
 
 class Memory:
-	def __init__(self, max_len, shape):
-		self.s_s = torch.zeros((max_len,) + shape, requires_grad=False, dtype=torch.uint8)
-		self.a_s = torch.zeros((max_len), requires_grad=False, dtype=torch.uint8)
-		self.sp_s = torch.zeros((max_len,) + shape, requires_grad=False, dtype=torch.uint8)
+	def __init__(self, max_len, shape, dtype=torch.uint8):
+		self.s_s = torch.zeros((max_len,) + shape, requires_grad=False, dtype=dtype)
+		self.a_s = torch.zeros((max_len), requires_grad=False, dtype=dtype)
+		self.sp_s = torch.zeros((max_len,) + shape, requires_grad=False, dtype=dtype)
 		self.r_s = torch.zeros((max_len), requires_grad=False)
 		self.done_mask = np.zeros(max_len, dtype=bool)
 		self._counter = 0

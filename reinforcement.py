@@ -44,6 +44,16 @@ class Learner:
 		self._last_eval = evl
 		return np.mean(np.array(vals))
 
+	def play_simple(self, env):
+		s = env.reset()
+		done = False
+
+		while not done:
+			a = self.get_action(s)
+			s, r, done, _ = env.step(a)
+			env.render()
+			time.sleep(0.015)
+
 	def play(self, env, interval=100):
 		fig = plt.figure(constrained_layout=True)
 		gs = GridSpec(3, 4, figure=fig)

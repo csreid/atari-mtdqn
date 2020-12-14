@@ -23,10 +23,15 @@ class QLearning(Learner):
 		gamma=0.99,
 		do_target=True,
 		memory_len=10000,
-		name=None
+		name=None,
+		memory_shape=(4, 84, 84),
+		initial_eps=0.1,
+		final_eps=0.01,
+		decay_steps=int(1e6),
+		memory_dtype=torch.uint8
 	):
 		self.n_actions = n_actions
-		self._memory = Memory(memory_len, (4, 84, 84))
+		self._memory = Memory(memory_len, memory_shape, dtype=memory_dtype)
 		self.Q = Sequential(
 			Conv2d(4, 32, kernel_size=8, stride=4),
 			LeakyReLU(),
@@ -47,10 +52,13 @@ class QLearning(Learner):
 		self._base_loss_fn = MSELoss()
 		self._steps = 0
 
-		self.eps = 0.1
-		self.decay = 0.01 ** (1/1e6)
+		self.eps = initial_eps
+		#self.decay = (final_eps / initial_eps) ** (1/decay_steps)
 
-	def learn(self, batch_size=256, n_samples=256):
+		# Linear Decay
+		self.decay = (initial_eps - final_eps) / decay_steps
+
+	def learn(self, batch_size=100, n_samples=100):
 		if len(self._memory) < n_samples:
 			return 'n/a'
 
@@ -101,7 +109,8 @@ class QLearning(Learner):
 		return self.Q(s[None, :])
 
 	def exploration_strategy(self, s):
-		self.eps *= self.decay
+		#self.eps *= self.decay
+		self.eps -= self.decay
 		if np.random.random() > self.eps:
 			ps = np.zeros(self.n_actions)
 			best_action = torch.argmax(self.Q(s[None, :]))
@@ -139,7 +148,12 @@ class TargetQLearning(QLearning):
 		target_lag=100,
 		transitions_per_fit=1,
 		memory_len=10000,
-		name=None
+		name=None,
+		memory_shape=(4, 84, 84),
+		initial_eps=0.1,
+		final_eps=0.01,
+		decay_steps=int(1e6),
+		memory_dtype=torch.uint8
 	):
 		super().__init__(
 			n_actions=n_actions,
@@ -148,7 +162,12 @@ class TargetQLearning(QLearning):
 			loss=loss,
 			gamma=gamma,
 			memory_len=memory_len,
-			name=name
+			memory_shape=memory_shape,
+			name=name,
+			initial_eps=initial_eps,
+			final_eps=final_eps,
+			decay_steps=decay_steps,
+			memory_dtype=memory_dtype
 		)
 		print('Building', name)
 
