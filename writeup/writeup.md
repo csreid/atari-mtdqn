@@ -49,7 +49,9 @@ I also attempted to implement another architecture for the Atari environments, s
 
 I trained this (and similar) architectures on various combinations of the Pong-like, Space Invaders-like, and Pacman-like games with no success. The network was never able to learn any of the games, and performance never grew beyond random play.
 
-I believe that this approach could work. However, I think it serves an important lesson that attempting to implement this architecture to complex environments could lead to difficulty, and care must be taken.
+I believe that this approach could work with a bit more tweaking. Unfortunately, there is a significant computational cost to training these networks on the Atari environments (300,000 steps takes ~20 hours on the IUPUI graduate student servers), and I ran out of time to continue tweaking.
+
+However, I think it serves an important lesson that attempting to implement this architecture to complex environments could lead to difficulty, and care must be taken.
 
 # Examination of Learned Features in Control Tasks
 
@@ -77,7 +79,13 @@ The authors report empirical results that indicate an improvement in performance
 
 Based on my experiments, it appears that these networks have sufficient representational power to essentially learn the tasks independently. When I attempt to reduce the dimensionality of the feature space to force the learning of some perhaps interpretable feature, the system becomes incapable of learning any task.
 
-It also deserves mention that their proposed architecture for solving these control problems involves ~13,000 parameters, while these problems can be solved with significantly fewer parameters (see `simple.ipynb` in the project repository for an example with 130 parameters). This also makes me think that perhaps these networks have too much expressive power.
+It also deserves mention that their proposed architecture for solving these control problems involves ~13,000 parameters, while these problems can be solved with significantly fewer parameters (see `notebooks/simple.ipynb` in the project repository for an example with 130 parameters). This also makes me think that perhaps these networks have too much expressive power.
+
+Of course, they do mention empirical success with improved learning rates and success with transfer learning, and this cannot be discounted. I am also considering that my expectations are incorrect; perhaps it's a good thing that the network is able to distinguish two fairly different problems based on the derived, set of shared features. Perhaps, with a wider array of learning environments, the network would be able to derive more coherent shared features.
+
+# Code Repository
+
+As referenced a few times in this paper, the repository for the experiments discussed here is available at https://github.com/csreid/atari-mtdqn, which includes some additional figures and Jupyter notebooks.
 
 # References
 <div id="refs"></div>

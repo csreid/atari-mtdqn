@@ -1,5 +1,4 @@
 __pycache__
-runs
 *.pickle
 .ipynb_checkpoints
 ./notebooks/.ipynb_checkpoints
