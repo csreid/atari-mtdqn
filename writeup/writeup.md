@@ -84,7 +84,7 @@ Based on my experiments, it appears that these networks have sufficient represen
 
 It also deserves mention that their proposed architecture for solving these control problems involves ~13,000 parameters, while these problems can be solved with significantly fewer parameters (see `notebooks/simple.ipynb` in the project repository for an example with 130 parameters). This also makes me think that perhaps these networks have too much expressive power.
 
-Of course, they do mention empirical success with improved learning rates and success with transfer learning, and this cannot be discounted. I am also considering that my expectations are incorrect; perhaps it's a good thing that the network is able to distinguish two fairly different problems based on the derived, set of shared features. Perhaps, with a wider array of learning environments, the network would be able to derive more coherent shared features.
+Of course, they do mention empirical success with improved learning rates and success with transfer learning, and this cannot be discounted. I am also considering that my expectations are incorrect; perhaps it's a good thing that the network is able to distinguish two fairly different problems based on the derived, set of shared features. Perhaps, with a wider array of learning environments which have more useful similarities, the system could extract more truly shared features.
 
 # Code Repository
 
