@@ -23,17 +23,17 @@ env2_name = 'PongNoFrameskip-v4'
 spaceinvader_likes = [
 	'CentipedeNoFrameskip-v4',
 	'SpaceInvadersNoFrameskip-v4',
-	'AirRaidNoFrameskip-v4',
-	'AssaultNoFrameskip-v4',
-	'AtlantisNoFrameskip-v4',
+	#'AirRaidNoFrameskip-v4',
+	#'AssaultNoFrameskip-v4',
+	#'AtlantisNoFrameskip-v4',
 	'DemonAttackNoFrameskip-v4',
 ]
 
 pong_likes = [
 	'PongNoFrameskip-v4',
 	'BreakoutNoFrameskip-v4',
-	'TennisNoFrameskip-v4',
-	'VideoPinballNoFrameskip-v4'
+	#'TennisNoFrameskip-v4',
+	#'VideoPinballNoFrameskip-v4'
 ]
 
 pacman_likes = [
@@ -43,7 +43,7 @@ pacman_likes = [
 	'AlienNoFrameskip-v4',
 ]
 
-all_games = pong_likes #spaceinvader_likes + pong_likes + pacman_likes
+all_games = spaceinvader_likes #pong_likes #spaceinvader_likes + pong_likes + pacman_likes
 
 all_envs = [
 	TorchWrapper(FrameStack(AtariPreprocessing(gym.make(n)), num_stack=4))
@@ -134,13 +134,13 @@ def run():
 
 		if (steps_taken % 100) == 0:
 			cur_time = time.time()
-			print(f'{steps_taken} in {round(cur_time - prev_time)} ({100/(cur_time - prev_time)} steps/sec)')
+			print(f'{steps_taken} in {round(cur_time - prev_time)} ({10/(cur_time - prev_time)} steps/sec)')
 			prev_time = cur_time
 
 		steps_taken += 1
 
 		if ((steps_taken*4) % 1000) == 0:
-			evls = [agt.evaluate(eval_env, 5) for agt, eval_env in zip(agts, all_eval_envs)]
+			evls = [agt.evaluate(eval_env, 1) for agt, eval_env in zip(agts, all_eval_envs)]
 
 			for idx, evl in enumerate(evls):
 				logger.add_scalar(f'Evaluation ({all_games[idx]})', evls[idx], steps_taken)

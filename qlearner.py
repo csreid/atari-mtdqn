@@ -4,7 +4,7 @@ import copy
 import numpy as np
 from numpy import e
 import torch
-from torch.nn import Sequential, Linear, LeakyReLU, MSELoss, Conv2d, Flatten, Sigmoid
+from torch.nn import Sequential, Linear, LeakyReLU, MSELoss, Conv2d, Flatten, Sigmoid, Tanh
 from torch.optim import Adam, RMSprop
 from torch.nn.utils import clip_grad_value_
 
@@ -100,7 +100,7 @@ class QLearning(Learner):
 			sp,
 			done
 		))
-		self.learn()
+		self.learn(n_samples=256)
 		self._steps += 1
 
 	def get_action_vals(self, s):
@@ -227,7 +227,7 @@ class MTQN(torch.nn.Module):
 				LeakyReLU(),
 				Flatten(),
 				Linear(3136, 1024),
-				Sigmoid()
+				Tanh()
 			)
 
 			for _ in output_shapes
@@ -241,7 +241,7 @@ class MTQN(torch.nn.Module):
 			Linear(512, 256),
 			LeakyReLU(),
 			Linear(256, 128),
-			Sigmoid()
+			Tanh()
 		)
 
 		# Map features to task-specific outputs

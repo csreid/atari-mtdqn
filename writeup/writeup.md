@@ -1,9 +1,10 @@
 ---
 author: Cameron Reid
 title: A Review of "Sharing knowledge in multi-task deep reinforcement learning"
-date: Deceber 14 2020
+date: December 14 2020
 classoption:
 - twocolumn
+- conference
 ---
 
 # Introduction
