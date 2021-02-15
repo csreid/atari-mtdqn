@@ -4,7 +4,7 @@ import copy
 import numpy as np
 from numpy import e
 import torch
-from torch.nn import Sequential, Linear, LeakyReLU, MSELoss, Conv2d, Flatten, Sigmoid, Tanh
+from torch.nn import Sequential, Linear, LeakyReLU, MSELoss, Conv2d, Flatten, Sigmoid, Tanh, BatchNorm2d, BatchNorm1d
 from torch.optim import Adam, RMSprop
 from torch.nn.utils import clip_grad_value_
 
@@ -62,6 +62,7 @@ class QLearning(Learner):
 		if len(self._memory) < n_samples:
 			return 'n/a'
 
+		self.Q.train()
 		X, y = self._build_dataset(n_samples)
 		y_pred = self.Q(X)
 		loss = self._base_loss_fn(y, y_pred) 
@@ -71,6 +72,7 @@ class QLearning(Learner):
 		clip_grad_value_(self.Q.parameters(), 1)
 		self.opt.step()
 
+		self.Q.eval()
 		return loss.item()
 
 	def _build_dataset(self, n):
@@ -219,6 +221,7 @@ class MTQN(torch.nn.Module):
 		# with values in (0, 1)
 		self.inputs = [
 			Sequential(
+				BatchNorm2d(4),
 				Conv2d(4, 32, kernel_size=8, stride=4),
 				LeakyReLU(),
 				Conv2d(32, 64, kernel_size=4, stride=2),
@@ -236,6 +239,7 @@ class MTQN(torch.nn.Module):
 		# Shared layers map 1024d metastate to a 128d
 		# feature vector, with values in (0, 1)
 		self.shared = Sequential(
+			BatchNorm1d(1024),
 			Linear(1024, 512),
 			LeakyReLU(),
 			Linear(512, 256),
@@ -247,6 +251,7 @@ class MTQN(torch.nn.Module):
 		# Map features to task-specific outputs
 		self.outputs = [
 			Sequential(
+				BatchNorm1d(128),
 				Linear(128, 64),
 				LeakyReLU(),
 				Linear(64, s)
