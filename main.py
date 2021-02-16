@@ -80,7 +80,7 @@ agts = [
 		n_actions=env.action_space.n,
 		target_lag=1000,
 		opt_args={
-			'lr': 0.00001
+			'lr': 0.001
 		},
 		transitions_per_fit=4,
 		name=game
@@ -91,7 +91,7 @@ agts = [
 
 for idx, agt in enumerate(agts):
 	agt.Q = qs[idx]
-	agt.opt = Adam(agt.Q.parameters(), lr=0.0001)
+	agt.opt = Adam(agt.Q.parameters(), lr=0.01)
 	agt.Q.eval()
 
 def do_step(agt, env, s):
