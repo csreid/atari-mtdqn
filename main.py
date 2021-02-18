@@ -140,7 +140,7 @@ def run():
 
 		steps_taken += 1
 
-		if ((steps_taken*4) % 10000) == 0:
+		if ((steps_taken) % 50000) == 0:
 			evls = [agt.evaluate(eval_env, 1) for agt, eval_env in zip(agts, all_eval_envs)]
 
 			for idx, evl in enumerate(evls):
