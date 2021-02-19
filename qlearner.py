@@ -265,7 +265,11 @@ class MTQN(torch.nn.Module):
 
 	def _output(self, i, idx):
 		o = self.inputs[idx](i)
+		if torch.sum(o == 1) + torch.sum(o == -1) > 800:
+			raise Exception('Probably saturated')
 		o = self.shared(o)
+		if torch.sum(o == 1) + torch.sum(o == -1) > 800:
+			raise Exception('Probably saturated')
 		o = self.outputs[idx](o)
 
 		return o
