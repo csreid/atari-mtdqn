@@ -238,6 +238,9 @@ class MTQN(torch.nn.Module):
 			for _ in output_shapes
 		]
 
+		for i in self.inputs:
+			torch.nn.init.constant_(i[0].weight, 0.)
+
 		# Shared layers map 1024d metastate to a 128d
 		# feature vector, with values in (0, 1)
 		self.shared = Sequential(
