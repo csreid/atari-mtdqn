@@ -102,7 +102,10 @@ class QLearning(Learner):
 			sp,
 			done
 		))
-		self.learn(n_samples=256)
+
+		if (self._steps % 4) == 0:
+			self.learn(n_samples=1024)
+
 		self._steps += 1
 
 	def get_action_vals(self, s):
@@ -221,7 +224,6 @@ class MTQN(torch.nn.Module):
 		# with values in (0, 1)
 		self.inputs = [
 			Sequential(
-				BatchNorm2d(4),
 				Conv2d(4, 32, kernel_size=8, stride=4),
 				LeakyReLU(),
 				Conv2d(32, 64, kernel_size=4, stride=2),
@@ -239,7 +241,6 @@ class MTQN(torch.nn.Module):
 		# Shared layers map 1024d metastate to a 128d
 		# feature vector, with values in (0, 1)
 		self.shared = Sequential(
-			BatchNorm1d(1024),
 			Linear(1024, 512),
 			LeakyReLU(),
 			Linear(512, 256),
@@ -251,7 +252,6 @@ class MTQN(torch.nn.Module):
 		# Map features to task-specific outputs
 		self.outputs = [
 			Sequential(
-				BatchNorm1d(128),
 				Linear(128, 64),
 				LeakyReLU(),
 				Linear(64, s)
