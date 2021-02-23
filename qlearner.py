@@ -232,7 +232,6 @@ class MTQN(torch.nn.Module):
 				LeakyReLU(),
 				Flatten(),
 				Linear(3136, 1024),
-				Tanh()
 			)
 
 			for _ in output_shapes
@@ -249,7 +248,6 @@ class MTQN(torch.nn.Module):
 			Linear(512, 256),
 			LeakyReLU(),
 			Linear(256, 128),
-			Tanh()
 		)
 
 		# Map features to task-specific outputs
